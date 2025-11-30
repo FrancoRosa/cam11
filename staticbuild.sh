@@ -28,8 +28,8 @@ create_python_bundle() {
     log_info "Creating portable Python environment bundle..."
     
     # Check for required files
-    if [[ ! -f "yolov10.rknn" ]]; then
-        log_error "Required file yolov10.rknn not found in current directory"
+    if [[ ! -f "yolo11.rknn" ]]; then
+        log_error "Required file yolo11.rknn not found in current directory"
         exit 1
     fi
     
@@ -110,8 +110,8 @@ create_python_bundle() {
     
     # Copy application files
     cp direct2.py "$BUILD_DIR/"
-    cp yolov10.py "$BUILD_DIR/"
-    cp yolov10.rknn "$BUILD_DIR/models/"
+    cp yolov11.py "$BUILD_DIR/"
+    cp yolo11.rknn "$BUILD_DIR/models/"
     
     log_success "Python bundle created in: $BUILD_DIR"
 }
@@ -150,7 +150,7 @@ fi
 cd "$SCRIPT_DIR"
 
 # Run the application with explicit model path
-exec "$PYTHON_EXE" direct2.py --model_path "$SCRIPT_DIR/yolov10.rknn" "$@"
+exec "$PYTHON_EXE" direct2.py --model_path "$SCRIPT_DIR/yolo11.rknn" "$@"
 EOF
     
     chmod +x "$BUILD_DIR/webcam-ins"
@@ -188,7 +188,7 @@ Priority: optional
 Architecture: $(dpkg --print-architecture)
 Depends: libc6, libstdc++6, libgcc-s1, libopencv-dev
 Maintainer: YourName <your.email@example.com>
-Description: YOLOv10 Webcam Object Detection (Bundle Version)
+Description: YOLO11 Webcam Object Detection (Bundle Version)
  A computer vision application with bundled Python environment.
  This version includes all dependencies and should work without
  additional Python or conda installations.
@@ -232,14 +232,14 @@ test_bundle() {
         ls -l "$BUILD_DIR/python/lib/python3.8/site-packages/py_utils/"
     fi
     
-    # Check for yolov10.rknn
-    if [[ ! -f "$BUILD_DIR/models/yolov10.rknn" ]]; then
-        log_error "yolov10.rknn not found in bundle!"
+    # Check for yolo11.rknn
+    if [[ ! -f "$BUILD_DIR/models/yolo11.rknn" ]]; then
+        log_error "yolo11.rknn not found in bundle!"
         ls -l "$BUILD_DIR/models/"
         exit 1
     else
-        log_info "yolov10.rknn found in bundle:"
-        ls -l "$BUILD_DIR/models/yolov10.rknn"
+        log_info "yolo11.rknn found in bundle:"
+        ls -l "$BUILD_DIR/models/yolo11.rknn"
     fi
     
     # Test help command
@@ -261,11 +261,11 @@ test_bundle() {
         echo -e "\npy_utils check:"
         ls -la python/lib/python3.8/site-packages/py_utils || echo "py_utils not found"
         
-        echo -e "\nyolov10.rknn check:"
-        ls -la models/yolov10.rknn || echo "yolov10.rknn not found"
+        echo -e "\nyolo11.rknn check:"
+        ls -la models/yolo11.rknn || echo "yolo11.rknn not found"
         
         echo -e "\nTrying direct python execution:"
-        timeout 5s python/bin/python direct2.py --model_path yolov10.rknn --help 2>&1 || echo "Direct execution failed"
+        timeout 5s python/bin/python direct2.py --model_path yolo11.rknn --help 2>&1 || echo "Direct execution failed"
     fi
     
     cd ..
