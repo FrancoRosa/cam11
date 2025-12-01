@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import argparse
-from yolov10 import setup_model, post_process_yolov10, IMG_SIZE, CLASSES
+from yolo11 import setup_model, post_process, IMG_SIZE, CLASSES
 from colors import colors
 # --- Global variables for UI and mode selection ---
 current_mode = 0
@@ -25,7 +25,7 @@ webcam_width = 1280
 webcam_height = 720
 
 # --- Class Definitions and Colors ---
-TARGET_CLASS_NAMES = ["person", "car", "motorbike", "bus",  "truck"]
+TARGET_CLASS_NAMES = ["person", "car", "motorbike", "bus",  "truck", "pile"]
 
 # TARGET_CLASS_NAMES = [
 #     "person", "bicycle", "car","motorbike","aeroplane","bus","train","truck","boat","traffic light",
@@ -164,7 +164,7 @@ class SimpleTracker:
                 last_pos = positions[-1]
                 cv2.circle(img, last_pos, 5, color, -1)
                 cv2.putText(
-                    img, f'ID:{tid}', last_pos, cv2.FONT_HERSHEY_SIMPLEX, 0.5, colors, 2)
+                    img, f'ID:{tid}', last_pos, cv2.FONT_HERSHEY_SIMPLEX, 0.5, colors.green, 2)
 
 # --- UI Drawing Functions (Unchanged) ---
 
@@ -294,7 +294,7 @@ def run_detection(frame, model, platform):
         np.float32) / 255. if platform in ['pytorch', 'onnx'] else img_rgb
 
     outputs = model.run([input_data])
-    boxes, classes, scores = post_process_yolov10(outputs)
+    boxes, classes, scores = post_process(outputs)
 
     filtered_boxes, filtered_classes, filtered_scores = [], [], []
     if boxes is not None and len(boxes) > 0:
@@ -329,7 +329,7 @@ def main():
     global flip_top_half  # Add this
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model_path', type=str, default='./yolov10.rknn')
+    parser.add_argument('--model_path', type=str, default='./yolo11.rknn')
     parser.add_argument('--target', type=str, default='rk3576')
     parser.add_argument('--device_id', type=str, default=None)
     parser.add_argument('--camera_id',  default=45)
