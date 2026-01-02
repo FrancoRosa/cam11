@@ -42,3 +42,9 @@ python cam_classes.py --camera_id
 python cam_classes.py --camera_id 50 # camera id 50, run v4l2-ctl --device-list
 python cam_classes.py --camera_id "ppvideo.mp4" # add the route of a video
 ```
+
+# intel CPU requirements
+
+pip cache purge
+pip install torch --index-url https://download.pytorch.org/whl/cpu
+pip install numpy opencv-python onnxruntime ultralytics --no-deps
