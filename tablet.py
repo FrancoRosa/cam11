@@ -25,7 +25,7 @@ webcam_width = 1280
 webcam_height = 720
 SCREEN_HEIGHT = 1080
 SCREEN_WIDTH = 1920
-
+DEFAULT_CAM = 0
 # --- Class Definitions and Colors ---
 TARGET_CLASS_NAMES = ["person", "car", "motorbike", "bus",  "truck", "pile"]
 
@@ -334,7 +334,7 @@ def main():
     parser.add_argument('--model_path', type=str, default='./yolo11n.onnx')
     parser.add_argument('--target', type=str, default='rk3576')
     parser.add_argument('--device_id', type=str, default=None)
-    parser.add_argument('--camera_id',  default=0)
+    parser.add_argument('--camera_id',  default=DEFAULT_CAM)
     parser.add_argument('--width', type=int,  default=SCREEN_WIDTH) #1920
     parser.add_argument('--height', type=int,  default=SCREEN_HEIGHT) #550
     args = parser.parse_args()
